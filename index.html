@@ -133,8 +133,8 @@
 			const data = await req.json();
 			console.log(req, data);
 
-			const now = new Date("2023-10-06T11:32:00");
-			// const now = new Date();
+			// const now = new Date("2023-10-06T11:32:00");
+			const now = new Date();
 			const happening = isFreeAtTime(now, data);	
 
 			if(happening.free) {
@@ -149,7 +149,7 @@
 				const end = new Date(happening.event.end);
 				const minutes = Math.floor((end - now) / 1000 / 60);
 
-				const currentEventTitle = `${happening.event.type?happening.event.type:""}\n${happening.event.moduleName?happening.event.moduleName:""}\n${happening.event.lect?happening.event.lect:""}\n${happening.event.desc}
+				const currentEventTitle = `${happening.event.type?happening.event.type:"Missing Type"}\n${happening.event.moduleName?happening.event.moduleName:"Missing Module"}\n${happening.event.lect?happening.event.lect:"Missing Lecturer"}\n${happening.event.desc?happening.event.desc:"Missing Description"}
 				`
 
 				document.getElementById("js-footer").innerHTML = `The <abbr title="${currentEventTitle}">current session</abbr> finishes in <strong>${minsToString(minutes)}</strong>`;
