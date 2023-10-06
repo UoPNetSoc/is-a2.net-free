@@ -13,77 +13,117 @@
 		html, body {
 			margin: 0;
 			padding: 0;
-			font-family: sans-serif;
 		}
 
 		body {
-			display: flex;
-			justify-content: center;
-			align-items: center;
 			height: 100vh;
 			background-color: #eee;
 
 			font-family: "Open Sans", sans-serif;
 			text-align: center;
+		
+			overflow: hidden;
 		}
 
-		body.free {
-			background: #aea;
-		}
-
-		body.busy {
-			background: #eaa;
-		}
-
-		h1, p {
+		body main {
+			font-size: 5em;
+			color: #fff;
+			font-family: "Anton", sans-serif;
+			font-size: 20rem;
 			margin: 0;
 			padding: 0;
 		}
-		
 
-		h1 {
-			font-size: 3rem;
-			font-weight: normal;
-			margin-bottom: -5vh;
+		body.free main {
+			background-color: #5f5;
 		}
 
-		a {
-			color: #000;
+		body.busy main {
+			background-color: #f55;
+		}
+
+		body.free aside {
+			background-color: #afa;
+		}
+
+		body.busy aside {
+			background-color: #faa;
+		}
+
+		h1, h2, p {
+			margin: 0;
+			padding: 0;
+		}
+
+		header, main, aside, footer {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		header, aside {
+			height: 20vh;
+			font-size: 2rem;
+			background-color: #fff;
+		}
+
+		main {
+			height: 50vh;
+		}
+
+		footer {
+			height: 10vh;
+			background-color: #000;
+			color: #fff;
+		}
+
+		footer a {
+			color: #eee;
 			text-decoration: underline;
 		}
 
-		a:hover {
+		footer a:hover {
 			text-decoration: none;
 		}
 
-		h1, p#js-status, p#js-footer {
-			text-transform: uppercase;
-		}
+		@media screen and (max-height: 1000px) {
+			body {
+				font-size: 75%;
+				overflow: scroll;
+			}
 
-		p#js-status {
-			font-size: 25vw;
-			font-family: "Anton", sans-serif;
-			font-weight: bolder;
-		}
+			header, aside, footer {
+				min-height: 15rem;
+			}
 
-		p#js-footer {
-			margin-top: -5vh;
-			margin-bottom: 5vh;
-			font-size: 1.5rem;
+			main {
+				min-height: 40rem;
+			}
 		}
 	</style>
 </head>
 <body>
-	<main>
+	<header>
 		<h1>Is A2.net free right now?</h1>
+	</header>
 
+	<main>
 		<p id="js-status">...</p>
-
-		<p id="js-footer">...</p>
-		
-		<p>Remember that even if there is something happening, it is often possible to drop in, providing you do not disturb the session. Make sure to ask the lecturer first!</p>
-		<p>More detailed timetabling information can be found on <a href="https://roomcheck-webapps.port.ac.uk/roomcheck/#!/timetables">UoP Room Check</a> &bull; This is a thing by <a href="https://tomr.me">Tom</a>, made in October 2023. Not endorsed by the University of Portsmouth.</p>
 	</main>
+
+	<aside>
+		<p id="js-footer">
+			<noscript>Please enable Javascript</noscript>
+			...
+		</p>
+	</aside>
+
+	<footer>
+		<div>
+			<p>Remember that even if there is something happening, it is often possible to drop in, providing you do not disturb the session. Make sure to ask first!</p>
+			<p>More detailed timetabling information can be found on <a href="https://roomcheck-webapps.port.ac.uk/roomcheck/#!/timetables">UoP Room Check</a> &bull; By <a href="https://tomr.me">Tom</a>,  Oct 2023. Not endorsed by the University of Portsmouth.</p>
+		</div>
+	</footer>
 
 	<script>
 		async function checkRoom() {
@@ -93,8 +133,8 @@
 			const data = await req.json();
 			console.log(req, data);
 
-			// const now = new Date("2023-10-05T18:00:00");
-			const now = new Date();
+			const now = new Date("2023-10-06T11:32:00");
+			// const now = new Date();
 			const happening = isFreeAtTime(now, data);	
 
 			if(happening.free) {
@@ -109,8 +149,24 @@
 				const end = new Date(happening.event.end);
 				const minutes = Math.floor((end - now) / 1000 / 60);
 
-				document.getElementById("js-footer").innerHTML = `<strong>Current session finishes in ${minutes} minutes</strong> &mdash; There may be another session directly after!`;
+				const currentEventTitle = `${happening.event.type?happening.event.type:""}\n${happening.event.moduleName?happening.event.moduleName:""}\n${happening.event.lect?happening.event.lect:""}\n${happening.event.desc}
+				`
+
+				document.getElementById("js-footer").innerHTML = `The <abbr title="${currentEventTitle}">current session</abbr> finishes in <strong>${minsToString(minutes)}</strong>`;
 				document.body.classList.add("busy");
+
+				// check if there is a session timetabled after this one
+
+				// add a minute to the end time to check if there is a session after this one
+				end.setMinutes(end.getMinutes() + 1);
+				const next = isFreeAtTime(end, data);
+				if(next.free) {
+					document.getElementById("js-footer").innerHTML += " &bull; The room should be free after this session.";
+				} else {
+					const nextEnd = new Date(next.event.end);
+					const nextMinutes = Math.floor((nextEnd - end) / 1000 / 60);
+					document.getElementById("js-footer").innerHTML += ` &bull; There is another session after this one, which ends in <strong>${minsToString(nextMinutes)}</strong>`;
+				}
 			}
 		}
 
@@ -130,6 +186,14 @@
 			return { free: true };
 		}
 		
+		function minsToString(mins) {
+			const hours = Math.floor(mins / 60);
+			const minutes = mins % 60;
+
+			if(hours == 0) return `${minutes}m`;
+
+			return `${hours}h ${minutes}m`;
+		}
 	</script>
 </body>
 </html>
