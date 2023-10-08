@@ -16,38 +16,10 @@
 		}
 
 		body {
-			height: 100vh;
 			background-color: #eee;
-
 			font-family: "Open Sans", sans-serif;
 			text-align: center;
-		
 			overflow: hidden;
-		}
-
-		body main {
-			font-size: 5em;
-			color: #fff;
-			font-family: "Anton", sans-serif;
-			font-size: 20rem;
-			margin: 0;
-			padding: 0;
-		}
-
-		body.free main {
-			background-color: #5f5;
-		}
-
-		body.busy main {
-			background-color: #f55;
-		}
-
-		body.free aside {
-			background-color: #afa;
-		}
-
-		body.busy aside {
-			background-color: #faa;
 		}
 
 		h1, h2, p {
@@ -55,30 +27,68 @@
 			padding: 0;
 		}
 
-		header, main, aside, footer {
-			display: flex;
-			justify-content: center;
-			align-items: center;
+		header {
+			padding: 2em 0;
 		}
 
-		header, aside {
-			height: 20vh;
-			font-size: 2rem;
-			background-color: #fff;
+		main p {
+			padding: 1em 0;
 		}
 
-		main {
-			height: 50vh;
+		span#js-status {
+			display: inline-block;
+			padding: 0.25em 0.5em;
+			color: #fff;
+			font-size: 7em;
+			font-family: "Anton", sans-serif;
+			font-weight: bold;
+			border-radius: 0.5em;
+		}
+
+		body.free {
+			background-color: #efe;
+		}
+
+		body.free #js-status {
+			background-color: #494;
+		}
+
+		body.busy {
+			background-color: #fee;
+		}
+
+		body.busy #js-status {
+			background-color: #944;
+		}
+
+		span#js-footer {
+			font-style: italic;
 		}
 
 		footer {
-			height: 10vh;
-			background-color: #000;
-			color: #fff;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			padding: 1em 0;
+			background-color: #fffa;
+			color: #000;
+		}
+
+		footer p:not(:last-of-type) {
+			margin-bottom: 1em;
+		}
+
+		p:last-of-type {
+			font-size: 0.8em;
+		}
+
+		p:last-of-type span {
+			text-transform: lowercase;
 		}
 
 		footer a {
-			color: #eee;
+			color: #222;
 			text-decoration: underline;
 		}
 
@@ -86,18 +96,14 @@
 			text-decoration: none;
 		}
 
-		@media screen and (max-height: 1000px) {
-			body {
-				font-size: 75%;
-				overflow: scroll;
+		@media screen and (max-width: 1200px) {
+			footer {
+				font-size: 70%;
 			}
 
-			header, aside, footer {
-				min-height: 15rem;
-			}
-
-			main {
-				min-height: 40rem;
+			.new-line {
+				opacity: 0;
+				display: block;
 			}
 		}
 	</style>
@@ -108,20 +114,22 @@
 	</header>
 
 	<main>
-		<p id="js-status">...</p>
-	</main>
-
-	<aside>
-		<p id="js-footer">
-			<noscript>Please enable Javascript</noscript>
-			...
+		<p>
+			<span id="js-status">...</span>
 		</p>
-	</aside>
+		<p>
+			<span id="js-footer"></span>
+		</p>
+	</main>
 
 	<footer>
 		<div>
-			<p>Remember that even if there is something happening, it is often possible to drop in, providing you do not disturb the session. Make sure to ask first!</p>
-			<p>More detailed timetabling information can be found on <a href="https://roomcheck-webapps.port.ac.uk/roomcheck/#!/timetables">UoP Room Check</a> &bull; By <a href="https://tomr.me">Tom</a>,  Oct 2023. Not endorsed by the University of Portsmouth.</p>
+			<p>Even if there is something happening, it is often possible to drop in, providing you do not disturb the session. Make sure to ask first!</p>
+			<p>
+				<span>By&nbsp;<a href="https://thomasr.me">Tom</a> (not endorsed by the university!)&mdash;Oct&nbsp;2023</span>
+				<span class="new-line" aria-hidden="true">&bull;</span>
+				More detailed timetabling information can be found on <a href="https://roomcheck-webapps.port.ac.uk/roomcheck/#!/timetables">UoP&nbsp;Room&nbsp;Check</a>.
+			</p>
 		</div>
 	</footer>
 
@@ -133,13 +141,13 @@
 			const data = await req.json();
 			console.log(req, data);
 
-			// const now = new Date("2023-10-06T11:32:00");
+			// const now = new Date("2023-10-10T17:32:00");
 			const now = new Date();
 			const happening = isFreeAtTime(now, data);	
 
 			if(happening.free) {
 				document.getElementById("js-status").innerHTML = "Yes!";
-				document.getElementById("js-footer").innerHTML = "Nothing is currently timetabled. The room is likely to be free.";
+				document.getElementById("js-footer").innerHTML = `Nothing is currently timetabled.<span class="new-line" aria-hidden="true"> </span>The room is likely to be free.`;
 
 				document.body.classList.add("free");
 			} else {
@@ -161,11 +169,11 @@
 				end.setMinutes(end.getMinutes() + 1);
 				const next = isFreeAtTime(end, data);
 				if(next.free) {
-					document.getElementById("js-footer").innerHTML += " &bull; The room should be free after this session.";
+					document.getElementById("js-footer").innerHTML += `<span class="new-line" aria-hidden="true"> &bull; </span> The room should be free after this session.`;
 				} else {
 					const nextEnd = new Date(next.event.end);
 					const nextMinutes = Math.floor((nextEnd - end) / 1000 / 60);
-					document.getElementById("js-footer").innerHTML += ` &bull; There is another session after this one, which ends in <strong>${minsToString(nextMinutes)}</strong>`;
+					document.getElementById("js-footer").innerHTML += `<span class="new-line" aria-hidden="true"> &bull; </span>There is another session after this one, which ends in <strong>${minsToString(nextMinutes)}</strong>`;
 				}
 			}
 		}
