@@ -1,0 +1,99 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #eee;
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 2em 0;
+}
+
+main p {
+  padding: 1em 0;
+}
+
+span#js-status {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  color: #fff;
+  font-size: 7em;
+  font-family: "Anton", sans-serif;
+  font-weight: bold;
+  border-radius: 0.5em;
+}
+
+body.free {
+  background-color: #efe;
+}
+
+body.free #js-status {
+  background-color: #494;
+}
+
+body.busy {
+  background-color: #fee;
+}
+
+body.busy #js-status {
+  background-color: #944;
+}
+
+span#js-footer {
+  font-style: italic;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1em 0;
+  background-color: #fffa;
+  color: #000;
+}
+
+footer p:not(:last-of-type) {
+  margin-bottom: 1em;
+}
+
+p:last-of-type {
+  font-size: 0.8em;
+}
+
+p:last-of-type span {
+  text-transform: lowercase;
+}
+
+footer a {
+  color: #222;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 1200px) {
+  footer {
+    font-size: 70%;
+  }
+
+  .new-line {
+    opacity: 0;
+    display: block;
+  }
+}
