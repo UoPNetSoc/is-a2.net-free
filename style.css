@@ -36,6 +36,23 @@ span#js-status {
   border-radius: 0.5em;
 }
 
+span#js-status:hover {
+  animation: spin 2s linear infinite;
+  cursor: default;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+    filter: hue-rotate(359deg)
+  }
+}
+
 body.free {
   background-color: #efe;
 }
