@@ -91,10 +91,6 @@ p:last-of-type {
   font-size: 0.8em;
 }
 
-p:last-of-type span {
-  text-transform: lowercase;
-}
-
 footer a {
   color: #222;
   text-decoration: underline;
