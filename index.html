@@ -3,39 +3,74 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Is A2.net Free?</title>
+	<title>Is A2.NET Free?</title>
 
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans&display=swap" rel="stylesheet">
+	<style>
+		body {
+			max-width: 50em;
+			margin: 0 auto;
+			padding: 1em;
+			background-color: #119;
+			color: #ddd;
+			font-family: monospace;
+			font-size: 1.2em;
+		}
 
-	<link rel="stylesheet" href="style.css">
+		p {
+			margin: 2em 0;
+		}
+
+		a {
+			color: #ccf;
+			text-decoration: underline;
+		}
+
+		a:hover {
+			color: #aaf;
+			text-decoration: none;
+		}
+
+		header, main, footer {
+			border: 1px solid #fff;
+			padding: 0 0.5em;
+		}
+
+		header, footer {
+			text-align: center;
+		}
+
+		footer {
+			padding: 0.5em;
+		}
+
+		footer p {
+			margin: 0;
+			font-size: 0.8em;
+		}
+	</style>
 </head>
 <body>
-	<header>
-		<h1>Is A2.net free right now?</h1>
+	<header>	
+		<h1>Is A2.NET free right now?</h1>
 	</header>
-
+	
 	<main>
 		<p>
-			<span id="js-status">...</span>
+			This page <a href="index.old.html">used to</a> show a live status of whether the networking lab in Anglesea building was free or not. Sadly, with the removal of the Room Check website, there is no longer anywhere to scrape this information from.
 		</p>
+
 		<p>
-			<span id="js-footer"></span>
+			If you are interested, you are able to add the room's timetable to the new timetabling system, and view it there. From <a href="https://timetabling.port.ac.uk">timetabling.port.ac.uk</a>, select the "Toggle timetable list" button (it's a small calendar in a circle, in the top right) and clicking "Add," where a list of rooms is presented. If you are on this page, I am sure you can figure it out!
+		</p>
+
+		<p>
+			As a reminder, even if there is a session happening when you wish to visit, you are always welcome to ask the lecturer and the current class if you can drop in, assuming your computer is free and you do not disturb the session. Enjoy your time in the lab!
 		</p>
 	</main>
 
 	<footer>
-		<div>
-			<p>Even if there is something happening, it is often possible to drop in, providing you do not disturb the session. Make sure to ask first!</p>
-			<p>
-				<span>By&nbsp;<a href="https://netsoc.group">UoP NetSoc</a> (this page is not endorsed by the University!)&mdash;Oct&nbsp;2023</span>
-				<span class="new-line" aria-hidden="true">&bull;</span>
-				More detailed timetabling information can be found on <a href="https://roomcheck-webapps.port.ac.uk/roomcheck/#!/timetables">UoP&nbsp;Room&nbsp;Check</a>.
-			</p>
-		</div>
+		<p>A project by the <a href="https://netsoc.group">Computer Networking Society</a> at the University of Portsmouth</p>
+		<p>2023, 2024 &mdash; Not officially endorsed by the University or the SU</p>
 	</footer>
-
-	<script src="check-room.js"></script>
 </body>
 </html>

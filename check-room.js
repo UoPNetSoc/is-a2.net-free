@@ -1,4 +1,6 @@
 async function checkRoom() {
+	return false;
+
 	const api = `https://a2net-roomcheck-proxy.netsoc.group/events`;
 
 	const req = await fetch(api);
